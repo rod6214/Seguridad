@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="seguridadModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="seguridadModelStoreContainer">
+    <EntitySet Name="Usuario" EntityType="seguridadModel.Store.Usuario" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Sesion" EntityType="seguridadModel.Store.Sesion" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="UsuarioSesion" Association="seguridadModel.Store.UsuarioSesion">
+      <End Role="Usuario" EntitySet="Usuario" />
+      <End Role="Sesion" EntitySet="Sesion" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Usuario">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="pass" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="role" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Sesion">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="key" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="value" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="duration" Type="bigint" Nullable="false" />
+    <Property Name="initTime" Type="datetime" Nullable="false" />
+    <Property Name="Usuario_id" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="UsuarioSesion">
+    <End Role="Usuario" Type="seguridadModel.Store.Usuario" Multiplicity="1" />
+    <End Role="Sesion" Type="seguridadModel.Store.Sesion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Sesion">
+        <PropertyRef Name="Usuario_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="seguridadModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="seguridadEntities" annotation:LazyLoadingEnabled="false" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" >
+          <EntitySet Name="Usuario" EntityType="seguridadModel.Usuario" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <EntitySet Name="Sesion" EntityType="seguridadModel.Sesion" a:GetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <AssociationSet Name="UsuarioSesion" Association="seguridadModel.UsuarioSesion">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Sesion" EntitySet="Sesion" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Usuario" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" />
+          <Property Name="pass" Type="String" Nullable="false" />
+          <Property Name="role" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="Sesion" Relationship="seguridadModel.UsuarioSesion" FromRole="Usuario" ToRole="Sesion" />
+        </EntityType>
+        <EntityType Name="Sesion" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="key" Type="String" Nullable="false" />
+          <Property Name="value" Type="String" Nullable="false" />
+          <Property Name="duration" Type="Int64" Nullable="false" />
+          <Property Name="initTime" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="seguridadModel.UsuarioSesion" FromRole="Sesion" ToRole="Usuario" />
+          <Property Name="Usuario_id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="UsuarioSesion">
+          <End Type="seguridadModel.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="seguridadModel.Sesion" Role="Sesion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Sesion">
+              <PropertyRef Name="Usuario_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="seguridadModelStoreContainer" CdmEntityContainer="seguridadEntities">
+    <EntitySetMapping Name="Usuario">
+      <EntityTypeMapping TypeName="IsTypeOf(seguridadModel.Usuario)">
+        <MappingFragment StoreEntitySet="Usuario">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="pass" ColumnName="pass" />
+          <ScalarProperty Name="role" ColumnName="role" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sesion">
+      <EntityTypeMapping TypeName="IsTypeOf(seguridadModel.Sesion)">
+        <MappingFragment StoreEntitySet="Sesion">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="key" ColumnName="key" />
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="duration" ColumnName="duration" />
+          <ScalarProperty Name="initTime" ColumnName="initTime" />
+          <ScalarProperty Name="Usuario_id" ColumnName="Usuario_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
